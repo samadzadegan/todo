@@ -1,33 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodoList from "./TodoList";
 import { v4 as uuidv4 } from "uuid";
+import NewTodoInput from "./NewTodoInput";
 
 export default function Todos() {
-  const [todos, setTodos] = useState([
-    {
+  const [todos, setTodos] = useState([]);
+
+  const addNewTodoHandler = (todoTitle) => {
+    const newList = todos.concat({
       id: uuidv4(),
-      title: "Tailwind CSS To DO App List 1",
-      status: true,
-    },
-    {
-      id: uuidv4(),
-      title: "Tailwind CSS To DO App List 2",
+      title: todoTitle,
       status: false,
-    },
-  ]);
-
-  const onInputTodoChangeHandler = () => {};
-
-  const addNewTodoHandler = (event) => {
-    if (event.key === "Enter" && event.target.value) {
-      const newList = todos.concat({
-        id: uuidv4(),
-        title: event.target.value,
-        status: false,
-      });
-      setTodos(newList);
-      event.target.value = "";
-    }
+      status: false,
+    });
+    setTodos(newList);
   };
 
   const deleteTodoHandler = (todo) => {
@@ -58,6 +44,14 @@ export default function Todos() {
     setTodos(newList);
   };
 
+  useEffect(() => {
+    setTodos(JSON.parse(localStorage.getItem("todos_list")) ?? []);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos_list", JSON.stringify(todos));
+  }, [todos]);
+
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="w-full px-4 py-8 mx-auto shadow lg:w-1/3  bg-white">
@@ -67,15 +61,7 @@ export default function Todos() {
             TO DO APP
           </h1>
         </div>
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="What needs to be done today?"
-            className="w-full px-2 py-3 border rounded outline-none border-grey-600"
-            onChange={onInputTodoChangeHandler}
-            onKeyDown={addNewTodoHandler}
-          />
-        </div>
+        <NewTodoInput addTodo={addNewTodoHandler} />
         <TodoList
           todos={todos}
           deleteTodo={deleteTodoHandler}
