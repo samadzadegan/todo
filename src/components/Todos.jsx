@@ -11,7 +11,6 @@ export default function Todos() {
       id: uuidv4(),
       title: todoTitle,
       status: false,
-      status: false,
     });
     setTodos(newList);
   };
