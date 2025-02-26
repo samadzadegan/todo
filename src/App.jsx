@@ -1,9 +1,12 @@
 // import StopWatch from "./components/StopWatch";
 // import Video from "./components/Video";
-// import Todos from "./components/Todos";
-import Search from "./components/Search";
+import Todos from "./components/Todos";
+// import Search from "./components/Search";
 // import SaveProgress from "./components/custom-hooks/SaveProgress";
 // import StatusUserOnline from "./components/custom-hooks/StatusUserOnline";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -15,11 +18,12 @@ function App() {
             <StatusUserOnline />
           </div>
         </div> */}
-        <Search />
+        {/* <Search /> */}
         {/* <Video /> */}
         {/* <StopWatch /> */}
-        {/* <Todos /> */}
+        <Todos />
       </div>
+      <ToastContainer />
     </>
   );
 }

@@ -1,55 +1,131 @@
-import { useEffect, useState } from "react";
-import TodoList from "./TodoList";
-import { v4 as uuidv4 } from "uuid";
+import { useEffect, useReducer } from "react";
 import NewTodoInput from "./NewTodoInput";
+import TodoList from "./TodoList";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import todoReducer from "../reducers/todoReducer";
 
 export default function Todos() {
-  const [todos, setTodos] = useState([]);
+  const [todos, todoDispatcher] = useReducer(todoReducer, []);
 
   const addNewTodoHandler = (todoTitle) => {
-    const newList = todos.concat({
-      id: uuidv4(),
+    const newTodo = {
       title: todoTitle,
       status: false,
-    });
-    setTodos(newList);
+    };
+    fetch("https://67b9b49d51192bd378de2ecc.mockapi.io/todos", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(newTodo),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((todo) => {
+        todoDispatcher({
+          type: "add",
+          newTodo: todo,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const deleteTodoHandler = (todo) => {
-    const newList = todos.filter((todoItem) => {
-      return todoItem.id !== todo.id;
-    });
-
-    setTodos(newList);
+    fetch(`https://67b9b49d51192bd378de2ecc.mockapi.io/todos/${todo?.id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (res.ok) {
+          toast.success("delete is done");
+          return res.json();
+        } else {
+          toast.error("error occurred");
+        }
+      })
+      .then((todo) => {
+        todoDispatcher({
+          type: "delete",
+          todo,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const changeTodoStatusHandler = (todo) => {
-    const newList = todos.map((t) => {
-      if (t.id === todo.id) {
-        t.status = !todo.status;
-      }
-      return t;
-    });
-    setTodos(newList);
+    fetch(`https://67b9b49d51192bd378de2ecc.mockapi.io/todos/${todo?.id}`, {
+      method: "PUT", // or PATCH
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ status: !todo.status }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((todo) => {
+        todoDispatcher({
+          type: "toggle-status",
+          todo,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const changeTodoTitleHandler = (value, todo) => {
-    const newList = todos.map((t) => {
-      if (t.id === todo.id) {
-        t.title = value;
-      }
-      return t;
-    });
-    setTodos(newList);
+    fetch(`https://67b9b49d51192bd378de2ecc.mockapi.io/todos/${todo?.id}`, {
+      method: "PUT", // or PATCH
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ title: value }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((todo) => {
+        todoDispatcher({
+          type: "edit",
+          todo,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
-    setTodos(JSON.parse(localStorage.getItem("todos_list")) ?? []);
+    fetch("https://67b9b49d51192bd378de2ecc.mockapi.io/todos", {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((todos) => {
+        todoDispatcher({
+          type: "get-list",
+          todos,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("todos_list", JSON.stringify(todos));
-  }, [todos]);
+  // useEffect(() => {
+  //   localStorage.setItem("todos_list", JSON.stringify(todos));
+  // }, [todos]);
 
   return (
     <div className="flex items-center justify-center h-screen">
