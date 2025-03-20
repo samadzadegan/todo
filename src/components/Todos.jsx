@@ -5,6 +5,7 @@ import TodoList from "./TodoList";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import todoReducer from "../reducers/todoReducer";
+import { TodosContext } from "../contexts/TodoContext";
 
 export default function Todos() {
   const [todos, todoDispatcher] = useReducer(todoReducer, []);
@@ -137,12 +138,13 @@ export default function Todos() {
           </h1>
         </div>
         <NewTodoInput addTodo={addNewTodoHandler} />
-        <TodoList
-          todos={todos}
-          deleteTodo={deleteTodoHandler}
-          changeTodoStatus={changeTodoStatusHandler}
-          changeTodoTitle={changeTodoTitleHandler}
-        />
+        <TodosContext.Provider value={todos}>
+          <TodoList
+            deleteTodo={deleteTodoHandler}
+            changeTodoStatus={changeTodoStatusHandler}
+            changeTodoTitle={changeTodoTitleHandler}
+          />
+        </TodosContext.Provider>
       </div>
     </div>
   );
