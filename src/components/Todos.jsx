@@ -26,7 +26,7 @@ export default function Todos() {
         }
       })
       .then((todo) => {
-        todoDispatcher({
+        todoDispatcher({ 
           type: "add",
           newTodo: todo,
         });

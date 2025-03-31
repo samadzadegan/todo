@@ -7,6 +7,7 @@ import Todos from "./components/Todos";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Counter from "./components/Counter";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
         {/* <Search /> */}
         {/* <Video /> */}
         {/* <StopWatch /> */}
-        <Todos />
+        {/* <Todos /> */}
+        <Counter />
       </div>
       <ToastContainer />
     </>
