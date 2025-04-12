@@ -26,7 +26,7 @@ export default function Todos() {
         }
       })
       .then((todo) => {
-        todoDispatcher({ 
+        todoDispatcher({
           type: "add",
           newTodo: todo,
         });
@@ -114,6 +114,7 @@ export default function Todos() {
         }
       })
       .then((todos) => {
+        sortObject(todos);
         todoDispatcher({
           type: "get-list",
           todos,
@@ -129,8 +130,8 @@ export default function Todos() {
   // }, [todos]);
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="w-full px-4 py-8 mx-auto shadow lg:w-1/3  bg-white">
+    <div className="flex items-center justify-center">
+      <div className="w-full px-4 py-8 mx-auto shadow bg-white">
         <div className="flex items-center mb-6">
           <h1 className="mr-6 text-4xl font-bold text-purple-600">
             {" "}
@@ -148,4 +149,10 @@ export default function Todos() {
       </div>
     </div>
   );
+}
+
+export function sortObject(items) {
+  return items.sort(function (a, b) {
+    return +b.id - +a.id;
+  });
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DeleteIcon from "./icons/DeleteIcon";
 import EditIcon from "./icons/EditIcon";
+import { Link } from "react-router";
 
 export default function TodoListItem({
   todo,
@@ -66,7 +67,7 @@ export default function TodoListItem({
               todo?.status ? "line-through" : ""
             }`}
           >
-            {todo?.title}
+            <Link to={`/todos/${todo.id}`}>{todo?.title}</Link>
           </p>
 
           <button

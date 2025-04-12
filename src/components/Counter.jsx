@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useCounter from "../hooks/useCounter";
 import useInterval from "../hooks/useInterval";
 

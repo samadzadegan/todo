@@ -9,7 +9,7 @@ export default function TodoList({
 }) {
   const todos = useContext(TodosContext);
   return (
-    <ul className="list-reset">
+    <ul className="list-reset overflow-auto max-h-64">
       {todos.map((todo, i) => (
         <TodoListItem
           todo={todo}

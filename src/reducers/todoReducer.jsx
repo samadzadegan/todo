@@ -4,7 +4,7 @@ export default function todoReducer(todos, action) {
       return [].concat(action?.todos);
 
     case "add":
-      return todos.concat(action?.newTodo);
+      return [action?.newTodo, ...todos];
 
     case "delete":
       return todos.filter((todoItem) => {
