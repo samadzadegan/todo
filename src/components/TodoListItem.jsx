@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import DeleteIcon from "./icons/DeleteIcon";
 import EditIcon from "./icons/EditIcon";
 import { Link } from "react-router";
+const EditInput = lazy(() =>
+  import(/* webpackChunkName: "Edit-input"*/ "./edit-input")
+);
 
 export default function TodoListItem({
   todo,
@@ -42,18 +45,13 @@ export default function TodoListItem({
   return (
     <li className="relative flex items-center justify-between px-2 py-6 border-b">
       {editMode ? (
-        <div className="w-full flex items-center gap-x-2">
-          <input
-            type="text"
-            // value={inputValue}
-            // onChange={handleInputChange}
-            defaultValue={todo?.title ?? ""}
-            onChange={() => {}}
-            onKeyDown={editTodoHandler}
-            className="w-full px-4 py-2 border border-gray-400 rounded"
-          ></input>
-          <DeleteIcon onClick={hideEditMode} />
-        </div>
+        <Suspense fallback={<p>Loading ...</p>}>
+          <EditInput
+            todo={todo}
+            editTodoHandler={editTodoHandler}
+            hideEditMode={hideEditMode}
+          />
+        </Suspense>
       ) : (
         <div className="flex items-center">
           <input

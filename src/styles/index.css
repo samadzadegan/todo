@@ -3,3 +3,19 @@
   overflow: auto;
   margin-top: 0px;
 }
+
+.List {
+  border: 1px solid #d9dddd;
+  height: 500px;
+}
+
+.ListItemEven,
+.ListItemOdd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ListItemEven {
+  background-color: #f8f8f0;
+}
